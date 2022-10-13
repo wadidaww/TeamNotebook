@@ -7,12 +7,8 @@ struct tNode{
 };
 typedef tNode* pNode;
 
-int cnt(pNode t) {
-	return t ? t->sz : 0;
-}
-void upd(pNode t) {
-	if(t) t->sz = 1 + cnt(t->l) + cnt(t->r);
-}
+int cnt(pNode t) { return t ? t->sz : 0; }
+void upd(pNode t) { if(t) t->sz = 1 + cnt(t->l) + cnt(t->r); }
 void split(pNode t, int key, pNode &l, pNode &r){
 	if(!t) l = r = NULL;
 	else if(t->key <= key) {
@@ -54,13 +50,4 @@ void erase(pNode &t, int key) {
 		erase(key < t->key ? t->l : t->r, key);
 	}
 	upd(t);
-}
-pNode unite(pNode l, pNode r) {
-	if(!l || !r) return l ? l : r;
-	if(l->prior < r->prior) swap(l, r);
-	pNode lt, rt;
-	split(r, l->key, lt, rt);
-	l->l = unite(l->l, lt);
-	l->r = unite(l->r, rt);
-	return l;
 }
