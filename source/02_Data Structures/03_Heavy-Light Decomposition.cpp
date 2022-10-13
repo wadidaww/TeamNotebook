@@ -1,77 +1,83 @@
-struct HLD {
-  int n;
-  vector<int> id, size, idx, up, root, st;
-  vector<vector<int>> adj, chain;
-  SegTree seg;
-
-  HLD(const vector<vector<int>>& edges) :
-    n(edges.size()), id(n, -1), size(n, -1), idx(n, -1),
-    up(n, -1), adj(edges), seg(n) {
-    precompute(0, -1);
-    decompose(0, -1);
-    int cnt = 0;
-    st.resize(chain.size());
-    for(int i = 0; i < (int) chain.size(); ++i) {
-      st[i] = cnt;
-      cnt += chain[i].size();
-    }
-  }
-
-  void precompute(int pos, int dad) {
-    size[pos] = 1;
-    up[pos] = dad;
-    for(auto& i : adj[pos]) {
-      if(i != dad) {
-        precompute(i, pos);
-        size[pos] += size[i];
-      }
-    }
-  }
-
-  void decompose(int pos, int dad) {
-    if(id[pos] == -1) {
-      id[pos] = chain.size();
-      root.push_back(pos);
-      chain.emplace_back();
-    }
-    idx[pos] = chain[id[pos]].size();
-    chain[id[pos]].push_back(pos);
-    int mx = 0, heavy = -1;
-    for(auto& i : adj[pos]) {
-      if(i != dad && size[i] > mx) {
-        mx = size[i];
-        heavy = i;
-      }
-    }
-    if(heavy != -1)
-      id[heavy] = id[pos];
-    for(auto& i : adj[pos]) {
-      if(i != dad)
-        decompose(i, pos);
-    }
-  }
-
-  void update(int ch, int l, int r, int val) {
-    seg.update(st[ch] + l, st[ch] + r, val);
-  }
-
-  int query(int ch, int l, int r, int val) {
-    return seg.query(st[ch] + l, st[ch] + r, val);
-  }
+//vertex value, klo edge value, turunin nilainya ke vertex bawahnya
+class HLD {
+public:
+	static const int N = 100005;
+	int seg[N*4], in[N], out[N], sz[N], dep[N], par[N], root[N], idx[N], val[N], t, n;
+	vector<int> edge[N];
+	//idx -> actual index, in -> visited time
+	HLD():t(0) {}
+	HLD(int n):n(n) {
+		root[1] = par[1] = 1;
+		t = 0;
+	}
+	void upd(int id, int l, int r, int x, int v) {
+		if(l == r) {
+			seg[id] = val[x] = v;
+			return ;
+		}
+		int m = l + r >> 1;
+		if(in[x] <= m) upd(id<<1, l, m, x, v);
+		else upd(id<<1|1, m + 1, r, x, v);
+		seg[id] = seg[id<<1] ^ seg[id<<1|1];
+	}
+	int que(int id, int l, int r, int tl, int tr) {
+		if(r < tl || l > tr) return 0;
+		if(tl <= l && r <= tr) return seg[id];
+		int m = l + r >> 1;
+		return que(id<<1, l, m, tl, tr) ^ que(id<<1|1, m + 1, r, tl, tr);
+	}
+	void build(int id, int l, int r) {
+		if(l == r) {
+			seg[id] = val[idx[l]];
+			return ;
+		}
+		int m = l + r >> 1;
+		build(id<<1, l, m);
+		build(id<<1|1, m + 1, r);
+		seg[id] = (seg[id<<1] ^ seg[id<<1|1]);
+	}
+	void dfs(int u = 1, int p = 1, int d = 0) {
+		par[u] = p; dep[u] = d; sz[u] = 1;
+		int mx = -1;
+		for(int &v : edge[u]) {
+			if(v == p) continue;
+			dfs(v, u, d + 1);
+			sz[u] += sz[v];
+			if(mx < sz[v]) {
+				mx = sz[v];
+				swap(v, edge[u][0]);
+			}
+		}
+	}
+	void dfsHLD(int u = 1, int p = 1) {
+		idx[++t] = u; in[u] = t;
+		for(int &v : edge[u]) {
+			if(v == p) continue;
+			root[v] = (v == edge[u][0] ? root[u] : v);
+			dfsHLD(v, u);
+		}
+		// out[u] = t;
+	}
+	int lca(int x, int y) {
+		int res = 0;
+		while(root[x] != root[y]) {
+			if(dep[root[x]] < dep[root[y]]) swap(x, y);
+			res ^= que(1, 1, n, in[root[x]], in[x]);
+			x = par[root[x]];
+		}
+		if(dep[x] > dep[y]) swap(x, y);
+		res ^= que(1, 1, n, in[x], in[y]);
+		return res;
+	}
+	void reset() {
+		t = 0;
+		for(int i = 1 ; i <= n ; ++i) edge[i].clear();
+	}
 };
-
-// how to move from u to v
-while(1) {
-  if(hld.id[u] == hld.id[v]) {
-    if(hld.idx[u] > hld.idx[v])
-      swap(u, v);
-    hld.update(hld.id[u], hld.idx[u], hld.idx[v], w);
-    // or hld.query(hld.id[u], hld.idx[u], hld.idx[v]);
-    break;
-  }
-  if(hld.id[u] < hld.id[v])
-    swap(u, v);
-  hld.update(hld.id[u], 0, hld.idx[u], w);
-  // or hld.query(hld.id[u], 0, hld.idx[u]);
-  u = hld.up[hld.root[hld.id[u]]];
-}
+// HLD hld;
+// hld = HLD(n);
+// hld.dfs();
+// hld.dfsHLD();
+// hld.build(1, 1, n);
+	// hld.upd(1, 1, n, u, v);
+	// hld.lca(u, v);
