@@ -167,18 +167,14 @@ struct line {
     c = _c;
   }
   line(point P1, point P2) {
-    if(P1 < P2)
-      swap(P1, P2);
-    if(same_d(P1.x, P2.x))
-      a = 1.0, b = 0.0, c = -P1.x;
+    if(P1 < P2)swap(P1, P2);
+    if(same_d(P1.x, P2.x))a = 1.0, b = 0.0, c = -P1.x;
     else
       a = -(P1.y - P2.y) / (P1.x - P2.x), b = 1.0, c = -(a * P1.x) - P1.y;
   }
   line(point P, double slope) {
-    if(same_d(slope, INFD))
-      a = 1.0, b = 0.0, c = -P.x;
-    else
-      a = -slope, b = 1.0, c = -(a * P.x) - P.y;
+    if(same_d(slope, INFD))a = 1.0, b = 0.0, c = -P.x;
+    else a = -slope, b = 1.0, c = -(a * P.x) - P.y;
   }
   bool operator== (line other) {
     return same_d(a, other.a) && same_d(b, other.b) && same_d(c, other.c);
@@ -226,8 +222,7 @@ struct segment {
   segment(point _P, point _Q) {
     P = _P;
     Q = _Q;
-    if(Q < P)
-      swap(P, Q);
+    if(Q < P)swap(P, Q);
     line T(P, Q);
     L = T;
   }
@@ -236,8 +231,7 @@ struct segment {
   }
 };
 bool onSegment(point P, segment S) {
-  if(orientation(S.P, S.Q, P) != 0)
-    return false;
+  if(orientation(S.P, S.Q, P) != 0)return false;
   return between_d(P.x, S.P.x, S.Q.x) && between_d(P.y, S.P.y, S.Q.y);
 }
 bool s_intersection(segment S1, segment S2) {
@@ -245,16 +239,11 @@ bool s_intersection(segment S1, segment S2) {
   double o2 = orientation(S1.P, S1.Q, S2.Q);
   double o3 = orientation(S2.P, S2.Q, S1.P);
   double o4 = orientation(S2.P, S2.Q, S1.Q);
-  if(o1 != o2 && o3 != o4)
-    return true;
-  if(o1 == 0 && onSegment(S2.P, S1))
-    return true;
-  if(o2 == 0 && onSegment(S2.Q, S1))
-    return true;
-  if(o3 == 0 && onSegment(S1.P, S2))
-    return true;
-  if(o4 == 0 && onSegment(S1.Q, S2))
-    return true;
+  if(o1 != o2 && o3 != o4)return true;
+  if(o1 == 0 && onSegment(S2.P, S1))return true;
+  if(o2 == 0 && onSegment(S2.Q, S1))return true;
+  if(o3 == 0 && onSegment(S1.P, S2))return true;
+  if(o4 == 0 && onSegment(S1.Q, S2))return true;
   return false;
 }
 double pointToSegment(point P, point A, point B, point& C) {
@@ -271,8 +260,7 @@ double pointToSegment(point P, point A, point B, point& C) {
   return pointToLine(P, A, B, C);
 }
 double segmentToSegment(segment S1, segment S2) {
-  if(s_intersection(S1, S2))
-    return 0.0;
+  if(s_intersection(S1, S2))return 0.0;
   double ret = INFD;
   point dummy;
   ret = min(ret, pointToSegment(S1.P, S2.P, S2.Q, dummy));
@@ -520,12 +508,10 @@ circle minCoverCircle(polygon& A) {
 /*Geometry Algorithm*/
 double DP[110][110];
 double minCostPolygonTriangulation(polygon& A) {
-  if(A.P.size() < 3)
-    return 0;
+  if(A.P.size() < 3)return 0;
   FOR(i, A.P.size()) {
     for(int j = 0, k = i; k < A.P.size(); j++, k++) {
-      if(k < j + 2)
-        DP[j][k] = 0.0;
+      if(k < j + 2)DP[j][k] = 0.0;
       else {
         DP[j][k] = INFD;
         REP(l, j + 1, k - 1) {

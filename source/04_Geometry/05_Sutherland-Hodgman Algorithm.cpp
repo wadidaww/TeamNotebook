@@ -35,8 +35,7 @@ bool lies(point a, point b, point c) {
   if((c.x >= min(a.x, b.x) && c.x <= max(a.x, b.x)) &&
       (c.y >= min(a.y, b.y) && c.y <= max(a.y, b.y)))
     return true;
-  else
-    return false;
+  else return false;
 }
 bool anglecmp(point a, point b) {
   if(collinear(pivot, a, b))

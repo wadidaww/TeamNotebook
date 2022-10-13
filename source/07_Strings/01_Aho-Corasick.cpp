@@ -12,14 +12,12 @@ public:
 		exit_link = -1;
 	}
 };
- 
 class Aho {
 public:
 	vector<Vertex> t = vector<Vertex>(1);
 	vector<vector<int>> occ;
 	vector<string> pat;
 	string txt;
- 
 	void add_string(int num, string &s) {
 		int v = 0;
 		for(char ch : s) {

@@ -6,26 +6,22 @@ https://www.spoj.com/problems/LPS/
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-
 struct node {
   int next[26];
   int sufflink;
   int len, cnt;
 };
-
 const int N = 1e5 + 69;
 int n;
 string s;
 node tree[N];
 int idx, suff;
 int ans = 0;
-
 void init_eertree() {
   idx = suff = 2;
   tree[1].len = -1, tree[1].sufflink = 1;
   tree[2].len = 0, tree[2].sufflink = 1;
 }
-
 bool add_letter(int x) {
   int cur = suff, curlen = 0;
   int nw = s[x] - 'a';
@@ -58,7 +54,6 @@ bool add_letter(int x) {
   tree[idx].cnt = tree[tree[idx].sufflink].cnt + 1;
   return 1;
 }
-
 int main() {
   ios::sync_with_stdio(0);
   cin.tie(0);

@@ -46,8 +46,7 @@ namespace GEOM {
       while(ret.size() > sz &&
             cross(points[i], ret[ret.size() - 1], ret[ret.size() - 2]) < -EPS)
         ret.pop_back();
-      if(i == 0)
-        break;
+      if(i == 0)break;
       ret.push_back(points[i]);
     }
     return ret;

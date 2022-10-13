@@ -14,10 +14,8 @@ struct Circle {
 };
 
 Circle trivial(const vector<Point>& r) {
-  if(r.size() == 0)
-    return Circle(0, 0, -1);
-  else if(r.size() == 1)
-    return Circle(r[0].x, r[0].y, 0);
+  if(r.size() == 0)return Circle(0, 0, -1);
+  else if(r.size() == 1)return Circle(r[0].x, r[0].y, 0);
   else if(r.size() == 2) {
     double cx = (r[0].x + r[1].x) / 2.0, cy = (r[0].y + r[1].y) / 2.0;
     double rad = hypot(r[0].x - r[1].x, r[0].y - r[1].y) / 2.0;
@@ -38,8 +36,7 @@ Circle trivial(const vector<Point>& r) {
 
 // SHUFFLE THE POINTS FIRST!!!!!!
 Circle welzl(const vector<Point>& p, int idx = 0, vector<Point> r = {}) {
-  if(idx == (int) p.size() || r.size() == 3)
-    return trivial(r);
+  if(idx == (int) p.size() || r.size() == 3)return trivial(r);
   Circle d = welzl(p, idx + 1, r);
   if(hypot(p[idx].x - d.x, p[idx].y - d.y) > d.r) {
     r.push_back(p[idx]);

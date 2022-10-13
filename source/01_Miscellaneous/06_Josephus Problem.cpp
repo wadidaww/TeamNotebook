@@ -14,7 +14,6 @@ ll josephus(ll n, ll k) { // O(k log n)
     res += res / (k - 1);
   return res;
 }
-
 int josephus(int n, int k) { // O(n)
   int res = 0;
   for(int i = 1; i <= n; ++i)

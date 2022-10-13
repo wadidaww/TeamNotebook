@@ -2,7 +2,6 @@
 // (as long as the result is still a forest), and check whether two
 // nodes are in the same tree.
 // Complexity: log(n)
-
 struct Node { // Splay tree. Root's pp contains tree's parent.
   Node* p = 0, *pp = 0, *c[2];
   int sz = 0;
@@ -44,7 +43,6 @@ struct Node { // Splay tree. Root's pp contains tree's parent.
 };
 struct LinkCut {
   vector<Node> node;
-
   LinkCut(int N) : node(N + 1) {}
   void link(int u, int v) { // add an edge u --> v
     assert(!connected(u, v));

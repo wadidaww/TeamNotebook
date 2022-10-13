@@ -15,11 +15,9 @@ ll extGcd(ll a, ll b) {
 ll fix(ll sol, ll rt) {
   ll ret = 0;
   //CASE SOLUTION(X/Y) < TARGET
-  if(sol < target)
-    ret = -floor(abs(sol + target) / (double)rt);
+  if(sol < target)ret = -floor(abs(sol + target) / (double)rt);
   //CASE SOLUTION(X/Y) > TARGET
-  if(sol > target)
-    ret = ceil(abs(sol - target) / (double)rt);
+  if(sol > target)ret = ceil(abs(sol - target) / (double)rt);
   return ret;
 }
 ll work(ll a, ll b, ll c) {
