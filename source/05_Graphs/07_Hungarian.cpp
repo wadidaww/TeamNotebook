@@ -27,8 +27,7 @@ template <typename TD> struct Hungarian {
           if(d = hl[i] + hr[j] - adj[i][j], !vl[i] && d <= slk[i]) {
             if(pre[i] = j, d)
               slk[i] = d;
-            else if(!check(i))
-              return;
+            else if(!check(i))return;
           }
         }
       }
@@ -36,12 +35,9 @@ template <typename TD> struct Hungarian {
       for(int i = 0; i < n; i++) if(!vl[i] && d > slk[i])
           d = slk[i];
       for(int i = 0; i < n; i++) {
-        if(vl[i])
-          hl[i] += d;
-        else
-          slk[i] -= d;
-        if(vr[i])
-          hr[i] -= d;
+        if(vl[i])hl[i] += d;
+        else slk[i] -= d;
+        if(vr[i])hr[i] -= d;
       }
       for(int i = 0; i < n; i++) if(!vl[i] && !slk[i] && !check(i))
           return;

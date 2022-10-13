@@ -29,10 +29,8 @@ pair<pii, double> bruteForce(Point P[], int n) {
   return pair<pii, double> (ret, min);
 }
 pair<pii, double> getmin(pair<pii, double> x, pair<pii, double> y) {
-  if(x.fi.fi == -1 && x.fi.se == -1)
-    return y;
-  if(y.fi.fi == -1 && y.fi.se == -1)
-    return x;
+  if(x.fi.fi == -1 && x.fi.se == -1)return y;
+  if(y.fi.fi == -1 && y.fi.se == -1)return x;
   return (x.se < y.se) ? x : y;
 }
 pair<pii, double> stripClosest(Point strip[], int size, double d) {
@@ -48,8 +46,7 @@ pair<pii, double> stripClosest(Point strip[], int size, double d) {
   return pair<pii, double>(ret, min);
 }
 pair<pii, double> closestUtil(Point P[], int n) {
-  if(n <= 3)
-    return bruteForce(P, n);
+  if(n <= 3)return bruteForce(P, n);
   int mid = n / 2;
   Point midPoint = P[mid];
   pair<pii, double> dl = closestUtil(P, mid);

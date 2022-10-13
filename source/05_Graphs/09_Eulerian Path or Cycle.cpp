@@ -7,10 +7,8 @@
 // if there is a vertex u with an odd degree, call dfs(u)
 // else call on any vertex
 // ans = path result
-
 vector<set<int>> g;
 vector<int> ans;
-
 void dfs(int u) {
   while(g[u].size()) {
     int v = *g[u].begin();

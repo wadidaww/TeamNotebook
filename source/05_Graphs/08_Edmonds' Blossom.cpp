@@ -6,7 +6,6 @@ struct Blossom {
   vector<vector<int>> conn;
   int t, N;
   queue<int> Q;
-
   void augment(int u, int v) {
     int pv = v;
     do {
@@ -17,13 +16,11 @@ struct Blossom {
       v = nv;
     } while(u != pv);
   }
-
   int lca(int v, int w) {
     ++t;
     while(true) {
       if(v) {
-        if(aux[v] == t)
-          return v;
+        if(aux[v] == t)return v;
         aux[v] = t;
         v = orig[dad[match[v]]];
       }

@@ -7,13 +7,10 @@ struct Segtree2D {
         lc(NULL), rc(NULL) {}
     };
     typedef node* pnode;
-
     pnode root;
-
     Segtree(int l, int r) {
       root = new node(l, r);
     }
-
     void update(pnode& nw, int x, int val) {
       int l = nw->l, r = nw->r, mid = (l + r) / 2;
       if(l == r)
@@ -45,7 +42,6 @@ struct Segtree2D {
                       nw->rc ? nw->rc->val : INF);
       }
     }
-
     int query(pnode& nw, int x1, int x2) {
       if(!nw)
         return INF;
@@ -58,17 +54,14 @@ struct Segtree2D {
                     query(nw->rc, x1, x2));
       return ret;
     }
-
     void update(int x, int val) {
       assert(root->l <= x && x <= root->r);
       update(root, x, val);
     }
-
     int query(int l, int r) {
       return query(root, l, r);
     }
   };
-
   struct node {
     int l, r;
     Segtree y;
@@ -77,13 +70,10 @@ struct Segtree2D {
       lc(NULL), rc(NULL) {}
   };
   typedef node* pnode;
-
   pnode root;
-
   Segtree2D(int l, int r) {
     root = new node(l, r);
   }
-
   void update(pnode& nw, int x, int y, int val) {
     int& l = nw->l, &r = nw->r, mid = (l + r) / 2;
     if(l == r)
@@ -103,7 +93,6 @@ struct Segtree2D {
       nw->y.update(y, val);
     }
   }
-
   int query(pnode& nw, int x1, int x2, int y1, int y2) {
     if(!nw)
       return INF;
@@ -116,12 +105,10 @@ struct Segtree2D {
                   query(nw->rc, x1, x2, y1, y2));
     return ret;
   }
-
   void update(int x, int y, int val) {
     assert(root->l <= x && x <= root->r);
     update(root, x, y, val);
   }
-
   int query(int x1, int x2, int y1, int y2) {
     return query(root, x1, x2, y1, y2);
   }

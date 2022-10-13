@@ -6,7 +6,6 @@ struct tNode{
 	tNode(int key) : key(key), prior(rand()), l(NULL), r(NULL), sz(1) {}
 };
 typedef tNode* pNode;
-
 int cnt(pNode t) { return t ? t->sz : 0; }
 void upd(pNode t) { if(t) t->sz = 1 + cnt(t->l) + cnt(t->r); }
 void split(pNode t, int key, pNode &l, pNode &r){
@@ -25,9 +24,7 @@ void ins(pNode &t, pNode it) {
 	else if(it->prior > t->prior) {
 		split(t, it->key, it->l, it->r);
 		t = it;
-	} else {
-		ins(t->key <= it->key ? t->r : t->l, it);
-	}
+	} else ins(t->key <= it->key ? t->r : t->l, it);
 	upd(t);
 }
 void merge(pNode &t, pNode l, pNode r) {
@@ -46,8 +43,6 @@ void erase(pNode &t, int key) {
 		pNode th = t;
 		merge(t, t->l, t->r);
 		delete th;
-	} else {
-		erase(key < t->key ? t->l : t->r, key);
-	}
+	} else erase(key < t->key ? t->l : t->r, key);
 	upd(t);
 }

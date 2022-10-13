@@ -48,8 +48,7 @@ namespace MCMF {
   pair<FlowT, CostT> solve(int s, int t) {
     totalCost = 0, totalFlow = 0;
     while(1) {
-      if(!spfa(s, t))
-        break;
+      if(!spfa(s, t))break;
       FlowT mn = F_INF;
       for(int v = t, e = frm[v]; v != s; v = adj[e ^ 1], e = frm[v])
         mn = min(mn, cap[e] - flw[e]);
